@@ -183,11 +183,31 @@
   .panel p{ font-size:13.5px; line-height:1.65; color:var(--ink-dim); }
   .panel-rule{ margin-top:22px; height:1px; background:linear-gradient(90deg, var(--silver-dim), transparent); }
 
+  /* ---------- TIMELINE ---------- */
+  .timeline{ position:relative; padding-left:44px; }
+  .timeline::before{
+    content:""; position:absolute; left:5px; top:6px; bottom:6px; width:1px;
+    background:linear-gradient(var(--silver-dim), var(--line-soft));
+  }
+  .timeline-item{ position:relative; padding-bottom:60px; }
+  .timeline-item:last-child{ padding-bottom:0; }
+  .timeline-dot{
+    position:absolute; left:-44px; top:5px; width:11px; height:11px; border-radius:50%;
+    border:1px solid var(--silver-dim); background:var(--bg);
+  }
+  .timeline-item.current .timeline-dot{
+    background:var(--silver-bright); border-color:var(--silver-bright);
+    box-shadow:0 0 0 5px rgba(240,240,241,0.08);
+  }
+  .timeline-year{ font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.12em; color:var(--silver); margin-bottom:8px; }
+  .timeline-title{ font-family:'Cormorant Garamond',serif; font-weight:600; font-size:clamp(24px,3.4vw,32px); margin-bottom:10px; }
+  .timeline-desc{ font-size:14.5px; line-height:1.75; color:var(--ink-dim); max-width:540px; }
+
   /* ---------- EVENTS ---------- */
   .manifest{ border:1px solid var(--line-soft); }
   .m-row{
-    display:grid; grid-template-columns:80px 1fr 150px 120px; gap:16px; align-items:center;
-    padding:20px 24px; border-bottom:1px solid var(--line-soft);
+    display:grid; grid-template-columns:70px 1fr 190px; gap:16px; align-items:center;
+    padding:22px 24px; border-bottom:1px solid var(--line-soft);
     transition:background .2s ease;
   }
   .m-row:last-child{ border-bottom:none; }
@@ -197,16 +217,22 @@
     text-transform:uppercase; padding:14px 24px; background:var(--panel);
   }
   .m-code{ font-family:'JetBrains Mono',monospace; color:var(--silver); font-size:12.5px; }
-  .m-name{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:19px; }
-  .m-name small{ display:block; font-family:'Inter',sans-serif; font-weight:400; font-size:12px; color:var(--ink-faint); margin-top:2px; }
-  .m-dept{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-dim); }
-  .m-status{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em; padding:5px 10px; border-radius:20px; border:1px solid var(--line); text-align:center; color:var(--ink-dim); width:fit-content; }
-  .m-status.tbd{ color:var(--silver-bright); border-color:var(--silver-dim); }
+  .m-name{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:20px; }
+  .m-name small{ display:block; font-family:'Inter',sans-serif; font-weight:400; font-size:12.5px; color:var(--ink-dim); margin-top:4px; line-height:1.5; }
+  .m-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .m-tags span{ font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:0.04em; color:var(--ink-dim); border:1px solid var(--line); padding:3px 8px; border-radius:20px; }
+  .m-cat{ font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.06em; color:var(--ink-dim); text-transform:uppercase; }
 
   .manifest-note{
     margin-top:18px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-faint);
     display:flex; gap:8px; align-items:flex-start;
   }
+
+  .contact-people{ display:flex; gap:56px; flex-wrap:wrap; margin-bottom:48px; padding-bottom:48px; border-bottom:1px solid var(--line-soft); }
+  .contact-person .role{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:8px; }
+  .contact-person .name{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:24px; color:var(--ink); }
+  .contact-person .phone{ display:block; margin-top:6px; font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--silver); transition:color .2s; }
+  .contact-person .phone:hover{ color:var(--silver-bright); }
 
   /* ---------- FOOTER / CONTACT ---------- */
   footer{ border-top:1px solid var(--line-soft); padding:64px 0 40px; }
@@ -224,8 +250,8 @@
     nav.links.open{ transform:translateY(0); }
     .nav-toggle{ display:flex; }
     .about-grid{ grid-template-columns:1fr; }
-    .m-row{ grid-template-columns:56px 1fr; row-gap:6px; }
-    .m-dept, .m-status{ display:none; }
+    .m-row{ grid-template-columns:50px 1fr; row-gap:6px; }
+    .m-cat{ display:none; }
   }
   @media(prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
@@ -245,6 +271,7 @@
     </a>
     <nav class="links">
       <a href="#about">About</a>
+      <a href="#legacy">Legacy</a>
       <a href="#departments">Departments</a>
       <a href="#events">Events</a>
       <a href="#contact">Contact</a>
@@ -282,16 +309,127 @@
       <div class="about-grid reveal">
         <div>
           <div class="eyebrow">Who we are</div>
-          <p>TEC is SPPSPTM's external-facing committee — the team responsible for everything that
-          happens beyond the classroom: fests, sponsorships, press, socials and the logistics that
-          hold it all together.</p>
+          <p>TEC is SPPSPTM's award-winning, entirely student-run inter-college, cultural and national
+          fest committee — the team responsible for everything that happens beyond the classroom: fests,
+          sponsorships, press, socials and the logistics that hold it all together.</p>
           <p>Every division runs independently but reports into the same standard. When an event
           goes live, it's because seven teams synced without anyone noticing the seams.</p>
+          <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:19px; color:var(--silver); margin-top:26px; line-height:1.6;">
+            "The face of SPPSPTM to colleges across India — and the backbone of campus cultural life."
+          </p>
         </div>
         <div class="stat-list">
           <div class="stat"><span class="n">07</span><span class="l">Active Divisions</span></div>
-          <div class="stat"><span class="n">01</span><span class="l">Committee, One Standard</span></div>
-          <div class="stat"><span class="n">∞</span><span class="l">Events On The Horizon</span></div>
+          <div class="stat"><span class="n">12+</span><span class="l">Years Running</span></div>
+          <div class="stat"><span class="n">11</span><span class="l">Events This Cycle</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="legacy">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2>TEC Through The Years</h2>
+        <div class="count">LEGACY · SPPSPTM</div>
+      </div>
+
+      <div class="timeline reveal">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">c. 2014</div>
+          <div class="timeline-title">TEC Is Formed</div>
+          <div class="timeline-desc">SPPSPTM students form TEC to put the school on Mumbai's inter-college map — organising the first student fest contingents and in-house competitions.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">Mid-2010s</div>
+          <div class="timeline-title">Who's The Boss Launches</div>
+          <div class="timeline-desc">TEC's flagship campus management case competition launches, drawing SPPSPTM's sharpest student minds every year since. TEC also becomes home to the college's dance crew, drama club, debate society and music society.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">Late 2010s</div>
+          <div class="timeline-title">Formalised As The External Committee</div>
+          <div class="timeline-desc">A full student EB structure takes shape — President/GS, VPs, HODs, Junior Core — with a yearly batch-to-batch handover. TEC contingents become a known name at IIT Bombay's Avenues and ICT Mumbai's Vortex.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2020 · Sep 5–6</div>
+          <div class="timeline-title">Fármako Is Born</div>
+          <div class="timeline-desc">At the height of the pandemic, TEC conceives, builds and launches Fármako — SPPSPTM's National Pharma &amp; Management Fest — entirely online and entirely student-run. 14+ states, 60+ colleges, 30+ student ambassadors, 10,000+ website visits and ₹20,000+ in cash prizes.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2020–21</div>
+          <div class="timeline-title">Fármako Goes National</div>
+          <div class="timeline-desc">The digital fest scales to 600+ participants across 16 states. TEC builds its own end-to-end fest stack — registration, payments, virtual judging, e-certificates — with no external event company needed.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2021–22</div>
+          <div class="timeline-title">Back To Campus</div>
+          <div class="timeline-desc">TEC leads SPPSPTM's return to in-person events: cultural clubs restart live practice, contingents head back to fests, and Fármako moves to a hybrid format so out-of-state competitors are never locked out.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2023–24</div>
+          <div class="timeline-title">A National Award</div>
+          <div class="timeline-desc">TEC launches Pharm-Ex, a student-led pharma-awareness and public health campaign with IPA-MSB-SF, and wins the IPA "Most Innovative Campaign" Award — the first professional-body national award won by an SPPSPTM student committee.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2024–25</div>
+          <div class="timeline-title">A Flagship Committee</div>
+          <div class="timeline-desc">TEC is formally profiled as one of SPPSPTM's six flagship student committees in the official placement brochure, with four verticals formalised: National Fests, Inter-College Contingents, Cultural Clubs, and Professional Impact.</div>
+        </div>
+        <div class="timeline-item current">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2025–26</div>
+          <div class="timeline-title">Today</div>
+          <div class="timeline-desc">The current TEC batch takes over — raising the bar at Fármako, fielding winning contingents across Mumbai, growing Pharm-Ex, and shaping the next generation of SPPSPTM student leaders.</div>
+        </div>
+      </div>
+
+      <div class="sec-head reveal" style="margin-top:90px;">
+        <h2 style="font-size:clamp(28px,4vw,40px);">Flagships At A Glance</h2>
+      </div>
+      <div class="dept-grid reveal">
+        <div class="panel">
+          <div class="panel-top"><span class="panel-code">FK</span><span class="panel-num">Since 2020</span></div>
+          <h3>Fármako</h3>
+          <p>SPPSPTM's National Pharma &amp; Management Fest — TEC's flagship, drawing competitors from across India.</p>
+          <div class="panel-rule"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-top"><span class="panel-code">WTB</span><span class="panel-num">Since Mid-2010s</span></div>
+          <h3>Who's The Boss</h3>
+          <p>Campus management &amp; case competition — SPPSPTM's annual showdown of student business acumen.</p>
+          <div class="panel-rule"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-top"><span class="panel-code">ICC</span><span class="panel-num">Committee-Wide</span></div>
+          <h3>Inter-College Contingents</h3>
+          <p>Award-winning student teams sent to IIT Bombay's Avenues, ICT's Vortex and other top Mumbai fests.</p>
+          <div class="panel-rule"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-top"><span class="panel-code">CC</span><span class="panel-num">Committee-Wide</span></div>
+          <h3>Cultural Clubs</h3>
+          <p>SPPSPTM's official dance crew, drama club, debate society and music society — all student-run under TEC.</p>
+          <div class="panel-rule"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-top"><span class="panel-code">PX</span><span class="panel-num">Since 2023</span></div>
+          <h3>Pharm-Ex</h3>
+          <p>Award-winning national pharma-awareness and public health campaign with IPA-MSB-SF — "Most Innovative Campaign" 2023–24.</p>
+          <div class="panel-rule"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-top"><span class="panel-code">SC</span><span class="panel-num">Ongoing</span></div>
+          <h3>Seminars &amp; Collabs</h3>
+          <p>Student-led talks, workshops and cross-college collaborations with industry and professional bodies.</p>
+          <div class="panel-rule"></div>
         </div>
       </div>
     </div>
@@ -362,44 +500,108 @@
     <div class="wrap">
       <div class="sec-head reveal">
         <h2>Events</h2>
-        <div class="count">MANIFEST · UPDATED LIVE</div>
+        <div class="count">11 EVENTS · TEC / SPPSPTM</div>
       </div>
 
       <div class="manifest reveal">
         <div class="m-row head">
-          <span>Code</span><span>Event</span><span>Division</span><span>Status</span>
+          <span>Code</span><span>Event</span><span>Category</span>
         </div>
         <div class="m-row">
-          <span class="m-code">EV—01</span>
-          <span class="m-name">Event Name Here<small>One-line description of what it is</small></span>
-          <span class="m-dept">PRM / CR</span>
-          <span class="m-status tbd">Date TBD</span>
+          <span class="m-code">01</span>
+          <span class="m-name">Malhar<small>Where talent meets the spotlight — dance, music, drama and fashion across every stage.</small></span>
+          <span class="m-cat">Cultural Fest</span>
         </div>
         <div class="m-row">
-          <span class="m-code">EV—02</span>
-          <span class="m-name">Event Name Here<small>One-line description of what it is</small></span>
-          <span class="m-dept">SNG</span>
-          <span class="m-status tbd">Date TBD</span>
+          <span class="m-code">02</span>
+          <span class="m-name">Farmako<small>SPPSPTM's flagship national-level fest — a platform for innovation, collaboration and discovery.</small>
+            <div class="m-tags">
+              <span>Pitch to Pharm Glory</span><span>Yuvaa Sansaad</span><span>Make It Up</span>
+              <span>Escape Labs</span><span>Who's the Boss</span><span>Poster Presentation</span>
+            </div>
+          </span>
+          <span class="m-cat">Flagship Fest</span>
         </div>
         <div class="m-row">
-          <span class="m-code">EV—03</span>
-          <span class="m-name">Event Name Here<small>One-line description of what it is</small></span>
-          <span class="m-dept">LOG / SM</span>
-          <span class="m-status tbd">Date TBD</span>
+          <span class="m-code">03</span>
+          <span class="m-name">TEC Talks<small>Conversations that inspire — stories and ideas from industry leaders and changemakers.</small></span>
+          <span class="m-cat">Talk Series</span>
+        </div>
+        <div class="m-row">
+          <span class="m-code">04</span>
+          <span class="m-name">IPA MSB-SF<small>Indian Pharmaceutical Association — Maharashtra State Branch Student Forum activities.</small></span>
+          <span class="m-cat">Association Activities</span>
+        </div>
+        <div class="m-row">
+          <span class="m-code">05</span>
+          <span class="m-name">Rx by IPA<small>Interactive workshops, competitions and expert sessions — knowledge meets real-world skill.</small></span>
+          <span class="m-cat">Workshops &amp; Competitions</span>
+        </div>
+        <div class="m-row">
+          <span class="m-code">06</span>
+          <span class="m-name">Vaayu<small>A vibrant blend of creativity and entertainment, bringing campus together through energy and spirit.</small></span>
+          <span class="m-cat">Cultural Event</span>
+        </div>
+        <div class="m-row">
+          <span class="m-code">07</span>
+          <span class="m-name">Shastraat<small>Ideas in action — challenge perspectives and let your voice take centre stage.</small></span>
+          <span class="m-cat">Debate &amp; Ideas</span>
+        </div>
+        <div class="m-row">
+          <span class="m-code">08</span>
+          <span class="m-name">Zion<small>A fusion of music and entertainment that captures the true spirit of college life.</small></span>
+          <span class="m-cat">Entertainment</span>
+        </div>
+        <div class="m-row">
+          <span class="m-code">09</span>
+          <span class="m-name">Fury<small>Every game, every move, every victory — where strategy meets adrenaline.</small></span>
+          <span class="m-cat">Gaming Tournament</span>
+        </div>
+        <div class="m-row">
+          <span class="m-code">10</span>
+          <span class="m-name">Sports<small>Driven by passion, defined by teamwork — the spirit that brings champions together.</small></span>
+          <span class="m-cat">Sports Tournament</span>
+        </div>
+        <div class="m-row">
+          <span class="m-code">11</span>
+          <span class="m-name">TEC Alpha<small>The journey begins here — empowering students to innovate, collaborate and lead.</small></span>
+          <span class="m-cat">Leadership Programme</span>
         </div>
       </div>
-      <div class="manifest-note">— This is a placeholder manifest. Swap in your real event lineup, dates and divisions.</div>
+      <div class="manifest-note">— Dates to be announced closer to each event.</div>
     </div>
   </section>
 
   <section id="contact">
     <footer>
       <div class="wrap">
+        <div class="contact-people reveal">
+          <div class="contact-person">
+            <div class="role">Coordinator</div>
+            <div class="name">Vastavi Sawant</div>
+            <a class="phone" href="tel:+919769491130">+91 97694 91130</a>
+          </div>
+          <div class="contact-person">
+            <div class="role">Coordinator</div>
+            <div class="name">Naomi</div>
+            <a class="phone" href="tel:+919152678202">+91 91526 78202</a>
+          </div>
+          <div class="contact-person">
+            <div class="role">Coordinator</div>
+            <div class="name">Mahika Patiyal</div>
+            <a class="phone" href="tel:+918828450180">+91 88284 50180</a>
+          </div>
+          <div class="contact-person">
+            <div class="role">Coordinator</div>
+            <div class="name">Aadhar Krishna</div>
+            <a class="phone" href="tel:+918104427677">+91 81044 27677</a>
+          </div>
+        </div>
         <div class="foot-top">
           <h3>Get in touch.</h3>
           <div class="foot-links">
-            <a href="#">Instagram</a>
-            <a href="#">LinkedIn</a>
+            <a href="https://www.instagram.com/tec.sppsptm" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://www.linkedin.com/company/the-external-committee/" target="_blank" rel="noopener">LinkedIn</a>
             <a href="mailto:tec@sppsptm.edu">Email</a>
           </div>
         </div>
