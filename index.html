@@ -45,9 +45,6 @@
     z-index:0;
   }
 
-  .display{ font-family:'Cormorant Garamond', serif; }
-  .mono{ font-family:'JetBrains Mono', monospace; }
-
   .wrap{ max-width:1160px; margin:0 auto; padding:0 28px; position:relative; z-index:1; }
   a{ color:inherit; text-decoration:none; }
 
@@ -218,19 +215,28 @@
   .timeline-title{ font-family:'Cormorant Garamond',serif; font-weight:600; font-size:clamp(24px,3.4vw,32px); margin-bottom:10px; }
   .timeline-desc{ font-size:14.5px; line-height:1.75; color:var(--ink-dim); max-width:540px; }
 
-  /* ---------- TEAM / EB ---------- */
-  .eb-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:50px; }
-  .eb-year-label{
-    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; color:var(--silver-dim);
-    text-transform:uppercase; padding-bottom:16px; border-bottom:1px solid var(--line-soft);
+  /* ---------- UPDATES ---------- */
+  .updates-grid{ display:flex; flex-direction:column; border:1px solid var(--line-soft); }
+  .update-row{
+    display:grid; grid-template-columns:100px 1fr auto; gap:22px; align-items:center;
+    padding:24px 24px; border-bottom:1px solid var(--line-soft);
+    transition:background .2s ease;
   }
-  .eb-list{ list-style:none; margin-top:6px; }
-  .eb-list li{
-    font-family:'Cormorant Garamond',serif; font-weight:500; font-size:21px; color:var(--ink);
-    padding:16px 0; border-top:1px solid var(--line-soft);
+  .update-row:last-child{ border-bottom:none; }
+  .update-row:hover{ background:var(--panel); }
+  .update-row.featured{ background:var(--panel); }
+  .update-tag{
+    font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--silver); border:1px solid var(--silver-dim); border-radius:20px; padding:5px 11px; width:fit-content;
   }
-  .eb-list li:last-child{ border-bottom:1px solid var(--line-soft); }
-  .eb-role{ display:block; font-family:'JetBrains Mono',monospace; font-weight:400; font-size:10px; letter-spacing:0.06em; color:var(--ink-faint); text-transform:uppercase; margin-top:4px; }
+  .update-title{ font-family:'Cormorant Garamond',serif; font-weight:600; font-size:21px; margin-bottom:4px; }
+  .update-desc{ font-size:13.5px; color:var(--ink-dim); line-height:1.6; max-width:480px; }
+  .update-cta{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    padding:11px 20px; border-radius:2px; border:1px solid var(--silver); color:var(--bg); background:var(--silver);
+    white-space:nowrap; transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .update-cta:hover{ transform:translateY(-2px); box-shadow:0 10px 26px -12px rgba(255,255,255,0.35); }
 
   /* ---------- EVENTS ---------- */
   .manifest{ border:1px solid var(--line-soft); }
@@ -258,7 +264,6 @@
   }
 
   .contact-people{ display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:32px 40px; margin-bottom:48px; padding-bottom:48px; border-bottom:1px solid var(--line-soft); }
-  .contact-person .role{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:8px; }
   .contact-person .name{ font-family:'Cormorant Garamond',serif; font-weight:500; font-size:18px; color:var(--ink); }
   .contact-person .phone{ display:block; margin-top:3px; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--silver); transition:color .2s; }
   .contact-person .phone:hover{ color:var(--silver-bright); }
@@ -270,7 +275,7 @@
   .foot-links{ display:flex; gap:28px; flex-wrap:wrap; }
   .foot-links a{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; color:var(--ink-dim); text-transform:uppercase; transition:color .2s; }
   .foot-links a:hover{ color:var(--silver-bright); }
-  .foot-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--ink-faint); letter-spacing:0.06em; padding-top:26px; border-top:1px solid var(--line-soft); }
+  .foot-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--silver); letter-spacing:0.06em; padding-top:26px; border-top:1px solid var(--line-soft); }
 
   /* ---------- RESPONSIVE ---------- */
   @media(min-width:900px){ .cred{ display:block; } }
@@ -281,6 +286,7 @@
     .about-grid{ grid-template-columns:1fr; }
     .m-row{ grid-template-columns:50px 1fr; row-gap:6px; }
     .m-cat{ display:none; }
+    .update-row{ grid-template-columns:1fr; row-gap:12px; }
   }
   @media(prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
@@ -315,6 +321,7 @@
       <div class="txt">TEC<span>SVKM's NMIMS School of Pharmacy</span></div>
     </a>
     <nav class="links">
+      <a href="#updates">Updates</a>
       <a href="#about">About</a>
       <a href="#legacy">Legacy</a>
       <a href="#departments">Departments</a>
@@ -341,11 +348,38 @@
     <div class="sub">The External Committee</div>
     <p class="hero-desc">
       The bridge between campus and the world outside it — TEC plans, funds, builds and broadcasts
-      every event that puts SPPSPTM on the map. Seven divisions, one standard.
+      every event that puts SPPSPTM on the map. Eight divisions, one standard.
     </p>
     <div class="hero-cta">
       <a class="btn" href="#departments">View Departments</a>
       <a class="btn ghost" href="#events">See Events</a>
+    </div>
+  </section>
+
+  <section id="updates">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2>Recent Updates</h2>
+        <div class="count">TEC / SPPSPTM</div>
+      </div>
+      <div class="updates-grid reveal">
+        <div class="update-row featured">
+          <span class="update-tag">Recruiting</span>
+          <div>
+            <div class="update-title">First Years — Join TEC</div>
+            <div class="update-desc">Applications are open across all eight divisions. No prior experience required — just bring the willingness to build something with us.</div>
+          </div>
+          <a class="update-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSdMdlFn7UqgwP-5xp7DxL6ZLSzTywSEy6p-WDdDfTqID0P7_w/viewform?usp=send_form" target="_blank" rel="noopener">Apply Now</a>
+        </div>
+        <div class="update-row">
+          <span class="update-tag">Live</span>
+          <div>
+            <div class="update-title">Fármako 2025 Wrapped</div>
+            <div class="update-desc">The 2025 edition of TEC's flagship fest ran November 14–15. See the full lineup and what's next in the Events section.</div>
+          </div>
+          <a class="update-cta" href="#events" style="background:transparent; color:var(--ink); border-color:var(--line);">See Events</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -389,13 +423,13 @@
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-year">2016<span style="font-size:10px; opacity:.6;"> (approx.)</span></div>
+          <div class="timeline-year">2016</div>
           <div class="timeline-title">Who's The Boss Launches</div>
           <div class="timeline-desc">TEC's flagship campus management case competition launches, drawing SPPSPTM's sharpest student minds every year since. TEC also becomes home to the college's dance crew, drama club, debate society and music society.</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-year">2018<span style="font-size:10px; opacity:.6;"> (approx.)</span></div>
+          <div class="timeline-year">2018</div>
           <div class="timeline-title">Formalised As The External Committee</div>
           <div class="timeline-desc">A full student EB structure takes shape — President/GS, VPs, HODs, Junior Core — with a yearly batch-to-batch handover. TEC contingents become a known name at IIT Bombay's Avenues and ICT Mumbai's Vortex.</div>
         </div>
@@ -436,7 +470,6 @@
           <div class="timeline-desc">The current TEC batch takes over — raising the bar at Fármako, fielding winning contingents across Mumbai, growing Pharm-Ex, and shaping the next generation of SPPSPTM student leaders.</div>
         </div>
       </div>
-      <div class="manifest-note">— 2016 and 2018 are approximate. Confirm the real years and I'll pin them exactly.</div>
 
       <div class="sec-head reveal" style="margin-top:90px;">
         <h2 style="font-size:clamp(28px,4vw,40px);">Flagships At A Glance</h2>
@@ -491,7 +524,7 @@
       <div class="dept-grid reveal">
 
         <div class="panel">
-          <div class="panel-top"><span class="panel-code">ADF</span><span class="panel-num">01/09</span></div>
+          <div class="panel-top"><span class="panel-code">AD</span><span class="panel-num">01/08</span></div>
           <h3>Admin</h3>
           <p>Budgets, approvals and paperwork — the backbone that keeps every division funded and accountable.</p>
           <div class="panel-rule"></div>
@@ -499,15 +532,15 @@
         </div>
 
         <div class="panel">
-          <div class="panel-top"><span class="panel-code">LOGI</span><span class="panel-num">02/09</span></div>
+          <div class="panel-top"><span class="panel-code">LOGI</span><span class="panel-num">02/08</span></div>
           <h3>Logistics</h3>
-          <p>Venues, transport, equipment and on-ground setup. If it needs to physically happen, LOG makes it happen.</p>
+          <p>Venues, transport, equipment and on-ground setup. If it needs to physically happen, LOGI makes it happen.</p>
           <div class="panel-rule"></div>
           <div class="panel-heads">Nihar · Hardik · Madhav</div>
         </div>
 
         <div class="panel">
-          <div class="panel-top"><span class="panel-code">PR</span><span class="panel-num">03/09</span></div>
+          <div class="panel-top"><span class="panel-code">PR</span><span class="panel-num">03/08</span></div>
           <h3>Public Relations</h3>
           <p>Outreach, sponsorships and media relations — the voice TEC uses when it's talking to the outside world.</p>
           <div class="panel-rule"></div>
@@ -515,7 +548,7 @@
         </div>
 
         <div class="panel">
-          <div class="panel-top"><span class="panel-code">CR</span><span class="panel-num">04/09</span></div>
+          <div class="panel-top"><span class="panel-code">CR</span><span class="panel-num">04/08</span></div>
           <h3>Creatives</h3>
           <p>Design, branding and visual identity. Every poster, badge and banner TEC puts out starts here.</p>
           <div class="panel-rule"></div>
@@ -523,7 +556,7 @@
         </div>
 
         <div class="panel">
-          <div class="panel-top"><span class="panel-code">CULT</span><span class="panel-num">05/09</span></div>
+          <div class="panel-top"><span class="panel-code">CULT</span><span class="panel-num">05/08</span></div>
           <h3>Culturals</h3>
           <p>Fashion, dance and music — TEC's cultural clubs, run by students who'd rather be on stage than backstage.</p>
           <div class="panel-rule"></div>
@@ -656,7 +689,7 @@
           <span class="m-cat">IPA MSB-SF · Always Wins</span>
         </div>
       </div>
-      <div class="manifest-note">— These are festivals hosted by other institutions where TEC's societies and contingents compete, not events TEC organises itself. Host institution for Alpha still needs confirming.</div>
+      <div class="manifest-note">— These are festivals hosted by other institutions where TEC's societies and contingents compete, not events TEC organises itself.</div>
     </div>
   </section>
 
@@ -693,7 +726,7 @@
           <span>V. L. Mehta Road, Vile Parle (W), Mumbai, Maharashtra 400056</span>
           <span>TEC — THE EXTERNAL COMMITTEE · SHOBHABEN PRATAPBHAI PATEL SCHOOL OF PHARMACY &amp; TECHNOLOGY MANAGEMENT</span>
           <span>© 2026 · ALL DIVISIONS REPORTING</span>
-          <span id="credit" style="opacity:0.5;">Site by Anvi Santosh Kale</span>
+          <span id="credit" style="opacity:1; color:var(--silver-bright); font-weight:600; letter-spacing:0.08em;">Site by Anvi Santosh Kale</span>
         </div>
       </div>
     </footer>
